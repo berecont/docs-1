@@ -13,7 +13,7 @@ database. It passes the username, the password and the table name as arguments
 and expects a boolean return value.
 
 {{% notice info %}}
-Using the `importUser` hook has been deprecated and will no longer work in Contao 5.0. Use the `contao.import_user` event instead.
+Using the `importUser` hook has been deprecated and will no longer work in Contao 5.0.
 {{% /notice %}}
 
 
@@ -45,11 +45,9 @@ you added the user to the respective table, or `false` if not.
 // src/EventListener/ImportUserListener.php
 namespace App\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 
-/**
- * @Hook("importUser")
- */
+#[AsHook('importUser')]
 class ImportUserListener
 {
     public function __invoke(string $username, string $password, string $table): bool

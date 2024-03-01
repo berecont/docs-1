@@ -64,7 +64,7 @@ condition: `disable != 1 AND groups LIKE '%2%'`.
 The template »list_default.html5« is extensive, because it considers all eventualities of the representation in interaction 
 with the module. For our example, together with the following information regarding the map display, we simplify the template.
 
-Create a new template »list_default_member.html5« in the [template directory](/en/layout/templates/manage-template/) you 
+Create a new template »list_default_member.html5« in the [template directory](/en/layout/templates/php/manage-template/) you 
 have specified under »Themes« and then use this in your module »Listing«:
 
 ```html
@@ -109,7 +109,7 @@ have specified under »Themes« and then use this in your module »Listing«:
 
 {{% notice note %}}
 For simplicity's sake, we have entered rudimentary CSS information here directly in the template. Alternatively, 
-you could also store them as [CSS assets](/en/layout/templates/template-assets/).
+you could also store them as [CSS assets](/en/layout/templates/php/template-assets/).
 {{% /notice %}}
 
 
@@ -239,7 +239,7 @@ function createMemberMap(arrMemberData){
 	}
 
 	var mapProvider =
-	new L.tileLayer('https://{s}.tile.openstreetmap.org/tiles/osmde/{z}/{x}/{y}.png', {
+	new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 	  attribution: '&copy;<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	});
 
@@ -277,9 +277,9 @@ here, the specifications »iconSize«, »iconAnchor« and »popupAnchor« must a
 We supplement the existing template »list_default_member.html5« as follows:
 
 ```html
-// list_default_member.html5
+<!-- list_default_member.html5 -->
 
-<?
+<?php
 	$GLOBALS['TL_CSS'][] = '/files/myPathTo/leaflet.css|static';
 	$GLOBALS['TL_JAVASCRIPT'][] = '/files/myPathTo/leaflet.js|static';
 	$GLOBALS['TL_JAVASCRIPT'][] = '/files/myPathTo/myMemberLeafletMap.js|static';
@@ -308,6 +308,7 @@ We supplement the existing template »list_default_member.html5« as follows:
 <?php else: ?>
 	<div id="MYMEMBERMAP" class="block" style="height:40vh"></div>
 
+	<?php $tmpMemberMapData = '' ?>
 	<?php foreach ($this->tbody as $class => $row): ?>
 		<div class="block memberitem <?= $class ?>"><p>
 		  <a href="mailto:<?= $row['email']['raw'] ?>">
@@ -316,7 +317,7 @@ We supplement the existing template »list_default_member.html5« as follows:
 		  <?= $row['postal']['content'] ?> <?= $row['city']['content'] ?></span>
 		</p></div>
 
-		<? $tmpMemberMapData .= sprintf("{'markerPopupContent': '%s',  'LatLong': [%s]},", 
+		<?php $tmpMemberMapData .= sprintf("{'markerPopupContent': '%s',  'LatLong': [%s]},", 
 			$row['firstname']['content'].' '.$row['lastname']['content'], 
 			$row['myGeoData']['content']);
 		?>
@@ -335,7 +336,7 @@ We supplement the existing template »list_default_member.html5« as follows:
 </div>
 ```
 
-First we reference the required CSS and JS files (see also: [CSS and JavaScript asstes](/en/layout/templates/template-assets/)). 
+First we reference the required CSS and JS files (see also: [CSS and JavaScript asstes](/en/layout/templates/php/template-assets/)). 
 Furthermore we define a HTML container with the CSS ID `MYMEMBERMAP` for map display. In the PHP loop we collect the 
 required coordinates via `tmpMemberMapData` and generate a JavaScript array in order to call our function `createMemberMap(arrMemberMapData)`.
 
@@ -426,7 +427,7 @@ browser (you could also use the [sessionStorage](https://developer.mozilla.org/d
 
 ### Useful leaflet plugins
 
-The leaflet framework can be extended with [plugins](https://leafletjs.com/plugins.html). Here is a small selection:
+The leaflet framework can be extended with [plugins](https://leafletjs.com/). Here is a small selection:
 
 - [Leaflet.fullscreen](https://github.com/Leaflet/Leaflet.fullscreen): Expands the map with a fullscreen view.
 - [Leaflet.TileLayer.Grayscale](https://github.com/Zverik/leaflet-grayscale): Some map providers have SW/grayscale tiles. With 

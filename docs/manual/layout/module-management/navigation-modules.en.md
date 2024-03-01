@@ -23,7 +23,7 @@ main pages or only the subpages above a certain depth - called "level" in Contao
 the lowest nested level. The start level offers you the possibility to start the navigation menu from the second level, 
 for example, so that only a part of the page tree is displayed (submenu).
 
-![The navigation menus in the front end](/de/layout/module-management/images/en/the-navigation-menus-in-the-front-end.png?classes=shadow)
+![The navigation menus in the front end]({{% asset "images/manual/layout/module-management/en/the-navigation-menus-in-the-front-end.png" %}}?classes=shadow)
 
 **Stop level:** In contrast to the start level, which determines the entry level of the navigation menu, the stop level 
 determines the exit level, i.e. the maximum depth of the nesting. The main menu of our website, for example, should 
@@ -142,7 +142,7 @@ navigation path.
 
 **Module template:** Here you can overwrite the standard `mod_breadcrumb` template.
 
-![The breadcrumb navigation in the front end](/de/layout/module-management/images/en/the-breadcrumb-navigation-in-the-front-end.png?classes=shadow)
+![The breadcrumb navigation in the front end]({{% asset "images/manual/layout/module-management/en/the-breadcrumb-navigation-in-the-front-end.png" %}}?classes=shadow)
 
 **The HTML Output**  
 The front end module generates the following HTML code:
@@ -260,7 +260,7 @@ The front end module "Book navigation" adds a navigation menu to the website, wh
 backward or one level up within the page structure. The individual pages are turned like a book, hence the name of the 
 module.
 
-![The book navigation in the frontend](/de/layout/module-management/images/en/the-book-navigation-in-the-frontend.png?classes=shadow)
+![The book navigation in the frontend]({{% asset "images/manual/layout/module-management/en/the-book-navigation-in-the-frontend.png" %}}?classes=shadow)
 
 **Reference page**: The reference page defines the starting point of the book navigation. Parent pages are not 
 displayed in the book navigation.
@@ -296,7 +296,7 @@ The front end module generates the following HTML code:
 The "Article navigation" module adds a navigation menu to the website, which allows you to browse forward and backward 
 through the articles on a particular page, similar to book navigation.
 
-![The article navigation in the front end](/de/layout/module-management/images/en/the-article-navigation-in-the-front-end.png?classes=shadow)
+![The article navigation in the front end]({{% asset "images/manual/layout/module-management/en/the-article-navigation-in-the-front-end.png" %}}?classes=shadow)
 
 **Load the first item:** If you select this option, the first item is automatically loaded if no specific item has been 
 requested.
@@ -330,7 +330,7 @@ Note that the active element is displayed as `<strong>` a link and not as a link
 The front end module "HTML sitemap" adds an overview of all published and not hidden pages to the website. The 
 individual entries are displayed as links so that visitors can jump directly to a specific page. Whether or not a page 
 is displayed in the HTML sitemap also depends on its configuration in the page structure (see 
-[Expert Settings](/en/layout/site-structure/configure-pages/#expert-settings).
+[Expert Settings](/en/site-structure/regular-page/#expert-settings)).
 
 **Show protected items:** If you select this option, protected pages will also be displayed, which are otherwise only 
 available to registered members.

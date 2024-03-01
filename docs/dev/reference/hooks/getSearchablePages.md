@@ -12,6 +12,11 @@ The `getSearchablePages` hook is triggered when the the search index is rebuilt.
 It passes the array of pages and the ID of the root page as arguments and
 expects an array of _absolute_ URLs as return value.
 
+{{% notice info %}}
+Using the `getSearchablePages` hook is deprecated since Contao **4.11** and will no longer work in Contao 5.0. Use the 
+[`contao.sitemap` event](/reference/events/#contao-sitemap) instead.
+{{% /notice %}}
+
 
 ## Parameters
 
@@ -47,14 +52,12 @@ sitemap or only for the search index.
 // src/EventListener/GetSearchablePagesListener.php
 namespace App\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 
-/**
- * @Hook("getSearchablePages")
- */
+#[AsHook('getSearchablePages')]
 class GetSearchablePagesListener
 {
-    public function __invoke(array $pages, int $rootId = null, bool $isSitemap = false, string $language = null): array
+    public function __invoke(array $pages, $rootId = 0, bool $isSitemap = false, string $language = null): array
     {
         // Modify the $pages array …
 

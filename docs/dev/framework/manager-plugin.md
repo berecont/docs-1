@@ -385,6 +385,14 @@ from "Bundle X" and another one from "Bundle Y". The container then merges all t
 a certain configuration is coming from.
 {{% /notice %}}
 
+{{% notice warning %}}
+You cannot use `$container->addCompilerPass()` to add a compiler pass to the app here because `getExtensionConfig()` 
+is called on every plugin during the process of merging the configuration of all the bundles (done in Symfony
+in the `MergeExtensionConfigurationPass`). If you want to register a regular compiler pass that is called **after**
+the extensions have been merged, see the [respective guide](/guides/modify-container-at-compile-time/)
+to learn more.
+{{% /notice %}}
+
 
 #### Adding a custom Monolog handler with a custom channel
 
@@ -558,6 +566,27 @@ class Plugin implements RoutingPluginInterface
 }
 ```
 
+This will give you all the possibilities of registering routes in different formats within your
+one `routes.yaml` file. If, however, you only need one format (e.g. `attribute`) and have all your
+controllers in the same place (e.g. `src/Controller`), you may save yourself the additional config file:
+
+```php
+namespace Vendor\SomeBundle\ContaoManager;
+
+use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
+use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
+
+class Plugin implements RoutingPluginInterface
+{
+    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel)
+    {
+        $path = '@VendorSomeBundle/src/Controller';
+
+        return $resolver->resolve($path, 'attribute')->load($path);
+    }
+}
+```
 
 ## The `HttpCacheSubscriberPluginInterface`
 
@@ -567,7 +596,7 @@ before they hit the cache or are forwarded to Contao. For more information about
 please refer to [the FosHttpCache documentation][2].
 
 {{% notice note %}}
-This feature is available from **contao/manager-plugin 2.9.0** and **Contao 4.9.6**.
+{{< version-tag "4.9.6" >}} This feature is available from **contao/manager-plugin 2.9.0** and **Contao 4.9.6**.
 {{% /notice %}}
 
 

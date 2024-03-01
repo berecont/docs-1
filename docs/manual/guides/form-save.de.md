@@ -78,14 +78,12 @@ die Verzeichnisse `src/EventListener/` und platziere darin die Datei `PrepareFor
 // src/EventListener/PrepareFormDataListener.php
 namespace App\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Slug\Slug;
 use Contao\Form;
 use Doctrine\DBAL\Connection;
 
-/**
- * @Hook("prepareFormData")
- */
+#[AsHook('prepareFormData')]
 class PrepareFormDataListener
 {
     // Change these variables for your form, calendar and author
@@ -149,7 +147,7 @@ class PrepareFormDataListener
 }
 ```
 
-Die für unser Kalender benötigten Felder werden in dieser Datei gesetzt. Die folgenden Werte mußt du entsprechend
+Die für unser Kalender benötigten Felder werden in dieser Datei gesetzt. Die folgenden Werte musst du entsprechend
 deiner Umgebung anpassen:
 
 - `FORM_ID` (Die ID deines Formulars)
@@ -158,7 +156,7 @@ deiner Umgebung anpassen:
 
 Diese Angaben erhältst du im Backend über die Detailinformationen der jeweiligen Einträge.
 
-Das Feld »alias« entspricht dem »Event-Alias« deines Kalenders und muß eindeutig sein. Hierzu benutzen wir den
+Das Feld »alias« entspricht dem »Event-Alias« deines Kalenders und muss eindeutig sein. Hierzu benutzen wir den
 [Contao Slug-Service](https://docs.contao.org/dev/reference/services/#slug). Zunächst verwenden wir dazu den Inhalt 
 unseres übermittelten »title« Feldes und lassen lediglich Kleinbuchstaben und Ziffern zu. Umlaute 
 werden umgeschrieben und Leerzeichen ersetzt. 
@@ -168,7 +166,7 @@ für den dritten Parameter. Sofern erforderlich wird darüber automatisch eine e
 Eintrag hinzugefügt.
 
 {{% notice info %}}
-Du musst im Anschluß den Contao Cache über den »Contao Manager« oder über die »Konsole« löschen damit der Hook 
+Du musst im Anschluss den Contao Cache über den »Contao Manager« oder über die »Konsole« löschen damit der Hook 
 verarbeitet werden kann. Dies wird auch notwendig nachdem du Änderungen an der Datei »PrepareFormDataListener.php«
 vorgenommen hast.
 {{% /notice %}}
@@ -224,14 +222,7 @@ Typ `Auflistung` mit folgenden Angaben:
 |**Felder**                  |post_data                                         |
 
 
-
-{{% notice tip %}}
-Die Erweiterung bietet darüber hinaus zur gezielten Abfrage der Tabelle »tl_lead_data», in beliebigen Contao-Templates, 
-die Methode »getExportData()« der Klasse »DataCollector« 
-(s. a.: Leads »[DataCollector.php](https://github.com/terminal42/contao-leads/blob/master/library/Leads/DataCollector.php)»)
-{{% /notice %}}
-
 ### Fazit
 
-Wenn du jetzt das Fromular benutzt, werden die Daten gespeichert und sind im Navigationsbereich des Backends über den 
+Wenn du jetzt das Formular benutzt, werden die Daten gespeichert und sind im Navigationsbereich des Backends über den 
 Bereich »Anfragen« einsehbar.

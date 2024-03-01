@@ -49,10 +49,10 @@ to the file path and separated by a pipe `|` character.
 
 | Option | Example | Description |
 | --- | --- | --- |
-| Static | `|static` | Defines the asset as "static". |
-| Media | `|print` | Defines the `media` attribute of the `<link>` tag (CSS only). |
-| Media | `|async` | Defines the `async` attribute of the `<script>` tag (JavaScript only). |
-| Version | `|1` | Appends a `?v=…` parameter. Can be a version number or also a timestamp. |
+| Static | `\|static` | Defines the asset as "static". |
+| Media | `\|print` | Defines the `media` attribute of the `<link>` tag (CSS only). |
+| Async | `\|async` | Defines the `async` attribute of the `<script>` tag (JavaScript only). |
+| Version | `\|1` | Appends a `?v=…` parameter. Can be a version number or also a timestamp. |
 
 All options can be combined in no particular order.
 
@@ -230,9 +230,9 @@ There are several use cases of using the asset helper within Contao:
   of the asset component).
 
     - By default, a bundle does not have a version, so no version suffix is added. 
-      The asset component resolves `{{asset::foobar.min.js::fooexample}}` to `web/bundles/fooexample/foobar.min.js`.
+      The asset component resolves `{{asset::foobar.min.js::foo_example}}` to `web/bundles/fooexample/foobar.min.js`.
     - If the `public` folder has a `manifest.json` in its root, that file is used 
-      to generate a *manifest.json version strategy*. For `{{asset::foobar.js::fooexample}}` 
+      to generate a *manifest.json version strategy*. For `{{asset::foobar.js::foo_example}}` 
       the asset component will look up `foobar.js` in the `manifest.json` and output 
       that path. This is useful when using e.g. [Webpack Encore][WebpackEncore] 
       to generate the assets, as hashed file names are resolved to `web/bundles/fooexample/foobar-1ussdg71.js`.

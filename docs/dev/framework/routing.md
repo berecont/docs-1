@@ -86,9 +86,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/example", name=ExampleController::class)
- */
+#[Route('/example', name: ExampleController::class)]
 class ExampleController
 {
     public function __invoke(Request $request): Response
@@ -151,14 +149,13 @@ the controller's service needs to be set to `public` or be tagged with the
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Terminal42\ServiceAnnotationBundle\Annotation\ServiceTag;
 
-/**
- * @Route("/example", name=ExampleController::class)
- * @ServiceTag("controller.service_arguments")
- */
+#[Route('/example', name: ExampleController::class)]
+#[AsController]
 class ExampleController
 {
     private $security;
@@ -202,7 +199,7 @@ as a "Contao request" and thus handled accordingly with the following effects:
   to which language the current request belongs to (depending on your site structure, 
   if the request can be matched there) or the `Accept-Language` request header.
 * The CSRF protection is automatically enabled.
-* The user session is automatically recored in the database, if a logged in user 
+* The user session is automatically recorded in the database, if a logged in user 
   is present.
 * The output of content elements and front end modules change, depending on the
   scope. For example, front end modules typically do not show their output in the
@@ -229,9 +226,7 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/example", name=ExampleController::class, defaults={"_scope": "frontend"})
- */
+#[Route('/example', name: ExampleController::class, defaults: ['_scope' => 'frontend'])]
 class ExampleController
 {
     public function __invoke(): Response
@@ -260,9 +255,7 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/example", name=ExampleController::class, defaults={"_token_check": true})
- */
+#[Route('/example', name: ExampleController::class, defaults: ['_token_check' => true])]
 class ExampleController
 {
     public function __invoke(): Response
@@ -288,9 +281,7 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/example", name=ExampleController::class, defaults={"_bypass_maintenance": true})
- */
+#[Route('/example', name: ExampleController::class, defaults: ['_bypass_maintenance' => true])]
 class ExampleController
 {
     public function __invoke(): Response
@@ -299,6 +290,51 @@ class ExampleController
     }
 }
 ```
+
+
+### Page Model
+
+{{< version "5.0" >}}
+
+The `Contao\PageModel` instance for a regular Contao page request is available under the `pageModel` request attribute.
+This allows you to access any current and inherited attributes of the current page.
+
+```php
+// src/ExampleService.php
+namespace App;
+
+use Contao\PageModel;
+use Symfony\Component\HttpFoundation\RequestStack;
+
+class ExampleService
+{
+    public function __construct(private readonly RequestStack $requestStack)
+    {
+    }
+
+    public function __invoke(): void
+    {
+        $request = $this->requestStack->getCurrentRequest();
+
+        /** @var PageModel $page */
+        if ($page = $request->attributes->get('pageModel')) {
+            $title = $page->title;
+
+            // …
+        }
+    }
+}
+```
+
+{{% notice "note" %}}
+This is also available in Contao **4.9** and later. However, prior to Contao **5** the `pageModel` attribute might also
+just be an integer ID rather than a `PageModel` instance (specifically in fragment subrequests). The attribute might
+also not be available at all, depending on the request's circumstances. As explained in the respective articles you can
+use the `getPageModel()` method in fragment controller for content elements and fron end modules to retrieve the current
+`PageModel`. If you need this in a different service in Contao 4 then you will need to copy the
+[implementation](https://github.com/contao/contao/blob/705b8bcf18d3f30c967cf75a69c381b3397466f4/core-bundle/src/Controller/AbstractFragmentController.php#L50-L75)
+of that method.
+{{% /notice %}}
 
 
 [SymfonyRouting]: https://symfony.com/doc/current/routing.html

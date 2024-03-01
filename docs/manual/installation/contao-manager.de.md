@@ -52,15 +52,15 @@ Contao Manager prüft automatisch, ob die Anforderungen erfüllt sind.
 
 ### Hosting-Konfiguration
 
-In Contao befinden sich alle öffentlich erreichbaren Dateien im Unterordner `/web` der Installation. Erstelle 
-dazu den Ordner `web` und setze das Wurzelverzeichnis (Document Root) der Installation über das Admin-Panel 
+In Contao befinden sich alle öffentlich erreichbaren Dateien im Unterordner `/public` der Installation. Erstelle 
+dazu den Ordner `public` und setze das Wurzelverzeichnis (Document Root) der Installation über das Admin-Panel 
 des Hosting-Providers auf diesen Unterordner.
 
-**Beispiel:** `example.com` zeigt auf das Verzeichnis `/www/example/web`
+**Beispiel:** `example.com` zeigt auf das Verzeichnis `/www/example/public`
 
 ({{< version-tag "4.12" >}} Dem Standard von Symfony folgend, wurde der öffentlich erreichbare Unterordner von `/web`
 in `/public` umbenannt. Falls in deiner Installation ein Verzeichnis `/web` existiert, wird dieses von Contao
-automatisch anstelle von `/public` verwendet.)
+automatisch anstelle von `/public` verwendet. Bei einem Wechsel von `/web` auf `/public` ist die Änderung auch in der composer.json anzugeben.) 
 
 {{% notice note %}}
 Pro Contao-Installation wird deshalb eine eigene (Sub)Domain benötigt.
@@ -71,7 +71,7 @@ Pro Contao-Installation wird deshalb eine eigene (Sub)Domain benötigt.
 
 Der Contao Manager besteht aus einer einzelnen Datei, welche über [contao.org](https://contao.org/de/download.html) 
 heruntergeladen werden kann. Nach erfolgreichem Download erhältst du eine Datei `contao-manager.phar`. 
-Übertrage diese Datei in das Verzeichnis `web` auf deinem Webserver.
+Übertrage diese Datei in das Verzeichnis `public` auf deinem Webserver.
 
 {{% notice info %}}
 `.phar`-Dateien werden nicht von allen Hosting-Anbietern ausgeführt. Für beste Kompatibilität füge die 
@@ -89,7 +89,7 @@ Manager-Datei zerstört. Füge deshalb die Dateiendung `.php` erst nach dem Uplo
 Rufe anschließend mit deinem Browser die URL `www.example.com/contao-manager.phar.php` auf. Du solltest nun 
 die Willkommensseite des Contao Managers sehen.
 
-![Willkommensseite des Contao Managers](/de/installation/images/de/willkommensseite-des-contao-managers.png?classes=shadow)
+![Willkommensseite des Contao Managers]({{% asset "images/manual/installation/de/willkommensseite-des-contao-managers.png" %}}?classes=shadow)
 
 
 ### Grundkonfiguration
@@ -107,7 +107,7 @@ Der Contao Manager benötigt keine eigene Datenbank. Die Konfiguration des Conta
 Der Contao Manager benötigt den Pfad zum PHP-Binary und weitere Server-Informationen, um Hintergrund-Prozesse korrekt 
 auszuführen. In der Regel wird der Pfad automatisch erkannt.
 
-![Serverkonfiguration](/de/installation/images/de/serverkonfiguration.png?classes=shadow)
+![Serverkonfiguration]({{% asset "images/manual/installation/de/serverkonfiguration.png" %}}?classes=shadow)
 
 
 #### Composer Resolver Cloud
@@ -193,7 +193,7 @@ php vendor/bin/contao-console security:encode-password 'my_1._pA~~w0rd'
 ### Kann der Contao Manager zu einer bestehenden Installation hinzugefügt werden? {#kann-der-contao-manager-zu-einer-bestehenden-installation-hinzugefuegt-werden}
     
 Ja, wenn du eine Contao Installation in der Managed Edition verwendest, dann kann der Contao Manager nachinstalliert 
-werden. Dazu einfach die `contao-manager.phar` in das Verzeichnis `web` laden und mit der 
+werden. Dazu einfach die `contao-manager.phar` in das Verzeichnis `public` laden und mit der 
 Dateiendung `.php` versehen.
 
 Der Manager erkennt bei der Grundinstallation, dass bereits Contao installiert ist.

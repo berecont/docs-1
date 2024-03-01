@@ -22,17 +22,15 @@ the specific tag you want to process yourself.
 
 The following example will provide an insert tag which transforms a string with
 the `str_rot13` function provided by PHP. It registers the [`replaceInsertTags`][ReplaceInsertTagsHook]
-hook using service annotation:
+hook using PHP attributes:
 
 ```php
 // src/EventListener/Rot13InsertTagListener.php
 namespace App\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 
-/**
- * @Hook("replaceInsertTags")
- */
+#[AsHook('replaceInsertTags')]
 class Rot13InsertTagListener
 {
     public const TAG = 'rot13';
@@ -83,6 +81,9 @@ add the `uncached` flag whenever used.
 <div>{{rot13::Payload|uncached}}</div>
 ```
 
+{{% notice warning %}}
+Using the `uncached` flag is deprecated and doesn’t work in Contao 5.0 anymore. Use the `{{fragment::*}}` insert tag instead.
+{{% /notice %}}
 
 [ReplaceInsertTagsHook]: /reference/hooks/replaceInsertTags/
 [FrameworkHooks]: /framework/hooks/

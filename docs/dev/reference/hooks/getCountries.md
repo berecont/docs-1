@@ -10,6 +10,11 @@ aliases:
 
 The `getCountries` hook allows to modify the system's list of countries.
 
+{{% notice info %}}
+Using the `getCountries` hook has been deprecated and will no longer work in Contao 5.0. Decorate the `Contao\CoreBundle\Intl\Countries` 
+service instead.
+{{% /notice %}}
+
 
 ## Parameters
 
@@ -30,11 +35,9 @@ The `getCountries` hook allows to modify the system's list of countries.
 // src/EventListener/GetCountriesListener.php
 namespace App\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 
-/**
- * @Hook("getCountries")
- */
+#[AsHook('getCountries')]
 class GetCountriesListener
 {
     public function __invoke(array &$translatedCountries, array $allCountries): void

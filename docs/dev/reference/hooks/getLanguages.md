@@ -10,6 +10,11 @@ aliases:
 
 The `getLanguages` hook allows to modify the system's list of languages.
 
+{{% notice info %}}
+Using the `getLanguages` hook has been deprecated and will no longer work in Contao 5.0. Decorate the `Contao\CoreBundle\Intl\Locales` 
+service instead.
+{{% /notice %}}
+
 
 ## Parameters
 
@@ -41,11 +46,9 @@ The `getLanguages` hook allows to modify the system's list of languages.
 // src/EventListener/GetLanguagesListener.php
 namespace App\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 
-/**
- * @Hook("getLanguages")
- */
+#[AsHook('getLanguages')]
 class GetLanguagesListener
 {
     public function __invoke(array &$compiledLanguages, array $languages, array $langsNative, bool $installedOnly): void

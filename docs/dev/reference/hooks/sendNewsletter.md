@@ -10,6 +10,10 @@ aliases:
 
 This hook is executed directly after Contao has sent a newsletter to its recipients.
 
+{{% notice info %}}
+Using the `sendNewsletter` hook has been deprecated and will no longer work in Contao 5.0.
+Use the [SendNewsletterEvent](/reference/events#sendnewsletterevent) instead.
+{{% /notice %}}
 
 ## Parameters
 
@@ -40,13 +44,11 @@ This hook is executed directly after Contao has sent a newsletter to its recipie
 // src/EventListener/SendNewsletterListener.php
 namespace App\EventListener;
 
-use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Database\Result;
 use Contao\Email;
 
-/**
- * @Hook("sendNewsletter")
- */
+#[AsHook('sendNewsletter')]
 class SendNewsletterListener
 {
     public function __invoke(Email $email, Result $newsletter, array $recipient, string $text, string $html): void

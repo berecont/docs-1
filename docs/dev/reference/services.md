@@ -59,14 +59,12 @@ namespace App\Controller\ContentElement;
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
-use Contao\CoreBundle\ServiceAnnotation\ContentElement;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @ContentElement(category="texts")
- */
+#[AsContentElement(category: 'texts')]
 class ExampleFormElementController extends AbstractContentElementController
 {
     /**
@@ -85,7 +83,7 @@ class ExampleFormElementController extends AbstractContentElementController
         $this->csrfTokenName = $csrfTokenName;
     }
 
-    protected function getResponse(Template $template, ContentModel $model, Request $request): ?Response
+    protected function getResponse(Template $template, ContentModel $model, Request $request): Response
     {
         $template->token = $this->csrfTokenManager->getToken($this->csrfTokenName)->getValue();
 
@@ -103,12 +101,85 @@ class ExampleFormElementController extends AbstractContentElementController
 ```
 
 
+## Database Connection
+
+Being able to operate on the database is of course a very common use case. Within Contao the database connection is provided via Symfony's
+[Doctrine Bundle][DoctrineBundle]. The bundle provides each configured database connection via its own service instance. The name of the
+service is `doctrine.dbal.[name]_connection` where `[name]` is the name of the database connection in your configuration. However, commonly
+you will only have one database in your Contao instance, the `default` connection. The default database connection will be available via
+the `database_connection` service (or `doctrine.dbal.default_connection`). All connection service instances will be of the type
+`Doctrine\DBAL\Connection`.
+
+```php
+use Doctrine\DBAL\Connection;
+
+class Example
+{
+    private $connection;
+
+    public function __construct(Connection $connection)
+    {
+        $this->connection = $connection;
+    }
+
+    public function __invoke(): void
+    {
+        $records = $this->connection->fetchAllAssociative("SELECT * FROM tl_foobar");
+
+        // …
+    }
+}
+```
+
+
+## EntityCacheTags
+
+{{< version "4.13" >}}
+
+The `contao.cache.entity_tags` service helps you tag responses and invalidate cache tags based on entity and model
+classes and instances. Contao uses a naming convention for database related tags: A tag `contao.db.tl_content.5` targets
+the content element with the ID 5, while `contao.db.tl_content` would target *all* content elements.
+
+#### Tagging
+
+Instead of composing this tags yourself, let the service handle this for you by passing in class names or entity/model 
+instances into one of its `tagWith()` methods:
+
+```php
+// An instance of a blog post entity with relations to an author (1:1) and comment entity (1:n)
+$blog = $blogRepository->find(42);
+
+// Will add the following tags:
+// 'contao.db.tl_blog.42', 'contao.db.tl_author.123', 'contao.db.tl_blog_comment.1', 'contao.db.tl_blog_comment.2'
+$entityCacheTags->tagWith([$blog, $blog->getAuthor(), $blog->getComments()]);
+
+// Will add the tag 'contao.db.tl_blog'
+$entityCacheTags->tagWith(Blog::class);
+```
+
+Tagging works with entity/model class names, objects and collections. You can also safely pass in `null`.
+
+#### Invalidating
+
+Analogous to tagging, you can also use the service to invalidate certain cache tags. This, again, works with
+entity/model class names, objects and collections as well as `null`:
+
+```php
+// Invalidates 'contao.db.tl_content', 'contao.db.tl_page.4', 'contao.db.tl_page.12'
+$entityCacheTags->invalidateTagsFor([ContentModel::class, $pages]);
+```
+
+{{% notice "info" %}}
+Contao's `AbstractController` is also using this functionality in the `tagResponse()` method.
+{{% /notice %}}
+
+
 ## OptIn
 
 {{< version "4.7" >}}
 
 Contao offers an opt-in service (`contao.opt-in`) so that any opt-in process can be tracked centrally. The opt-in references will be saved 
-for the legally required duration and are then automatically discarded (if applicable).
+for the legally required duration and are then automatically discarded (if applicable). The maximum length of the prefix before the "-" is 6.
 
 ```php
 namespace App;
@@ -127,7 +198,7 @@ class Example
 
     public function createOptIn(string $email, ExampleModel $model, string $optInUrl): void
     {
-        $token = $this->optIn->create('example-', $email, ['tl_example' => [$model->id]]);
+        $token = $this->optIn->create('exampl-', $email, ['tl_example' => [$model->id]]);
         $token->send('Opt-In', 'Click this link to opt-in: '.$optInUrl.'?token='.$token->getIdentifier());
     }
 
@@ -183,7 +254,7 @@ class Example
 
 ## ScopeMatcher
 
-This service provides the ability to identify the Contao scope of a request, if
+The `contao.routing.scope_matcher` service provides the ability to identify the Contao scope of a request, if
 applicable. It should be used instead of checking the deprecated `TL_MODE` constant.
 
 ```php
@@ -419,8 +490,122 @@ class Example
 }
 ```
 
+## InsertTagParser
 
-[SimpleTokenUsage]: https://github.com/contao/contao/blob/4.x/core-bundle/tests/String/SimpleTokenParserTest.php
+{{< version "4.13" >}}
+
+This service lets you replace Insert Tags in within strings.
+
+Some methods return a `ChunkedText` instance. The `ChunkedText` container was created to keep the surrounding text 
+containing the insert tags separate from the replacements made by the insert tag parser. It is used for example in the 
+twig escaper to skip encoding on inserttag replacement results.
+
+```php
+use Contao\CoreBundle\InsertTag\ChunkedText;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
+
+class Example
+{
+    private InsertTagParser $insertTagParser;
+    
+    public function __construct(InsertTagParser $insertTagParser)
+    {
+        $this->insertTagParser = $insertTagParser;
+    }
+
+    public function __invoke(string $buffer): string
+    {
+        // Returns a string and should be used in HTML context when the replaced result is sent as a response to the 
+        // client. It will allow ESI tags that can improve caching behaviour.
+        $resultReplace = $this->insertTagParser->replace($buffer);
+
+        // Returns a string and should be used when the result is not sent to a client 
+        // (e.g. when using `$email->subject()`).
+        $resultReplaceInline = $this->insertTagParser->replaceInline($buffer);
+
+        // Returns a ChunkedText instance and should be used in HTML context when the replaced result is sent as a 
+        // response to the client. It will allow ESI tags that can improve caching behaviour.
+        $resultChunked = $this->insertTagParser->replaceChunked($buffer);
+
+        // Returns a ChunkedText instance and should be used when the result is not sent to a client.
+        $resultChunked = $this->insertTagParser->replaceInlineChunked($buffer);
+
+        // Example usage for ChunkedText
+        if ($resultChunked instanceof ChunkedText) {
+            $parts = [];
+
+            foreach ($resultChunked as [$type, $chunk]) {
+                $parts[] = ChunkedText::TYPE_RAW === $type
+                    ? $chunk
+                    : htmlspecialchars($chunk);
+            }
+
+            return implode('', $parts);
+        }
+    }
+}
+```
+
+
+## RequestStack
+
+Symfony's [RequestStack][RequestStack] service provides a general way to retrieve the current request from the service
+container, in case the request object is not otherwise already available.
+
+```php
+use Symfony\Component\HttpFoundation\RequestStack;
+
+class Example
+{
+    public function __construct(private readonly RequestStack $requestStack)
+    {
+    }
+
+    public function __invoke()
+    {
+        $request = $this->requestStack->getCurrentRequest();
+
+        // Access request properties here
+    }
+}
+```
+
+
+## ResponseContextAccessor
+
+This service allows you to access the [response context][ResponseContext] for the current Contao request or set one.
+
+```php
+namespace App;
+
+use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
+use Contao\CoreBundle\Routing\ResponseContext\ResponseContextAccessor;
+
+class ExampleService
+{
+    public function __construct(private readonly ResponseContextAccessor $responseContextAccessor)
+    {
+    }
+
+    public function __invoke(): void
+    {
+        $responseContext = $this->responseContextAccessor->getResponseContext();
+
+        if ($responseContext?->has(HtmlHeadBag::class)) {
+            /** @var HtmlHeadBag $htmlHeadBag */
+            $htmlHeadBag = $responseContext->get(HtmlHeadBag::class);
+
+            // …
+        }
+    }
+}
+```
+
+
+[SimpleTokenUsage]: https://github.com/contao/contao/blob/5.x/core-bundle/tests/String/SimpleTokenParserTest.php
 [ExpressionLanguage]: https://symfony.com/doc/current/components/expression_language.html
 [ExpressionProvider]: https://symfony.com/doc/current/components/expression_language/extending.html#components-expression-language-provider
 [RequestTokens]: /framework/request-tokens/
+[DoctrineBundle]: https://symfony.com/doc/current/reference/configuration/doctrine.html
+[RequestStack]: https://symfony.com/doc/current/service_container/request.html
+[ResponseContext]: /framework/response-context/

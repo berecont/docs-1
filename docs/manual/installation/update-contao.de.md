@@ -40,11 +40,9 @@ Die aktuelle Bugfix-Version von Contao ist beim Schreiben dieser Zeilen die **Ve
 
 ### Long-Term-Support-Versionen
 
-Mit Version 2.11 wurde der [Release-Zyklus von Contao](https://contao.org/de/release-plan.html) angepasst und 
-[Long-Term-Support](https://de.wikipedia.org/wiki/Support_(Dienstleistung)#Long_Term_Support)-Versionen (LTS) 
-eingeführt, die 24 Monate lang unterstützt und mit Updates versorgt werden, auch wenn zwischenzeitlich schon neuere 
-Contao-Versionen veröffentlicht wurden. Eine Übersicht aller Contao Versionen gibt es auf 
-[Wikipedia](https://de.wikipedia.org/wiki/Contao#Versionen).
+Der [Release-Zyklus](https://contao.org/de/release-plan.html) von Contao beinhaltet auch Versionen mit 
+[Long Term Support](https://de.wikipedia.org/wiki/Support_(Dienstleistung)#Long_Term_Support). Die Contao-Versionen mit verlängertem 
+Supportzeitraum werden während 3 Jahren mit Bugfixes und 1 Jahr mit sicherheitsrelevanten Updates versorgt, auch wenn zwischenzeitlich schon neuere Contao-Versionen veröffentlicht wurden. Eine Übersicht aller Contao-Versionen gibt es auf [Wikipedia](https://de.wikipedia.org/wiki/Contao#Versionen).
 
 
 ## Aktualisierung mit dem Contao Manager
@@ -61,13 +59,13 @@ Bei einer Aktualisierung für ein [Bugfix-Release](#bugfix-release) genügt es a
 Besonderheit bei einer Aktualisierung für ein [Minor-Release](#minor-release): Klicke bei »Contao Open Source CMS« auf das 
 Zahnrad-Symbol und gebe die gewünschte Version ein. Durch einen Klick auf die Schaltfläche  »Pakete aktualisieren« und danach »Änderungen anwenden« schiebst du die Aktualisierung an.
 
-![Aktualisierung für Minor-Release starten](/de/installation/images/de/aktualisierung-fuer-minor-release-starten.png?classes=shadow)
+![Aktualisierung für Minor-Release starten]({{% asset "images/manual/installation/de/aktualisierung-fuer-minor-release-starten.png" %}}?classes=shadow)
 
 Die Aktualisierung kann nun mehrere Minuten in Anspruch nehmen. Details zum Aktualisierungsprozess können durch Klick 
-auf folgendes Symbol ![Konsolenausgabe anzeigen/verstecken](/de/icons/konsolenausgabe.png?classes=icon) angezeigt 
+auf folgendes Symbol ![Konsolenausgabe anzeigen/verstecken]({{% asset "icons/konsolenausgabe.png" %}}?classes=icon) angezeigt 
 werden.
 
-![Aktualisierung für Minor-Release abgeschloßen](/de/installation/images/de/aktualisierung-fuer-minor-release-abgeschlossen.png?classes=shadow)
+![Aktualisierung für Minor-Release abgeschloßen]({{% asset "images/manual/installation/de/aktualisierung-fuer-minor-release-abgeschlossen.png" %}}?classes=shadow)
 
 
 ### Datenbanktabellen aktualisieren
@@ -206,7 +204,7 @@ $ composer install
 oder du verwendest den Contao Manager. Dort wählst du unter »Systemwartung« den Punkt »Composer-Abhängigkeiten«, »Installer 
 ausführen«.
 
-![composer install mit dem Contao-Manager](/de/installation/images/de/composer-install-mit-dem-contao-manager.png?classes=shadow)
+![composer install mit dem Contao-Manager]({{% asset "images/manual/installation/de/composer-install-mit-dem-contao-manager.png" %}}?classes=shadow)
 
 Zum Abschluss musst du noch die Datenbanktabellen aktualisieren. 
 
@@ -254,7 +252,7 @@ deinem eigenen Server genügend Arbeitsspeicher bereitstellen kannst und entlast
 
 Die Einstellung findest du in der »Systemprüfung« im Bereich »Serverkonfiguration«.
 
-![Deaktivierung der Composer Resolver Cloud](/de/installation/images/de/cloud_resolver_abschalten.png?classes=shadow)
+![Deaktivierung der Composer Resolver Cloud]({{% asset "images/manual/installation/de/cloud_resolver_abschalten.png" %}}?classes=shadow)
 
 Nach dem erfolgreichen Update überträgst du wie im vorherigen Abschnitt beschrieben die `composer.json` und 
 `composer.lock` zurück in die Contao-Installation auf deinem Hosting. Die weiteren Schritte auf deinem Hosting sind die 

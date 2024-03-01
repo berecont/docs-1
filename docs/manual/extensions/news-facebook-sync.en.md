@@ -139,7 +139,7 @@ Starting with version **7.0** of the extension this step can be skipped.
 In Contao, go to _System - Settings_, scroll down to the _Facebook App_ section, enter the __App ID__ and __App Secret__ 
 of your Facebook App. You can find this information in your Facebook App under _Settings_ » _Basic_.
 
-![Facebook App settings](/de/extensions/images/en/contao-news-facebook_app_settings_en.png?classes=shadow)
+![Facebook App settings]({{% asset "images/manual/extensions/en/contao-news-facebook_app_settings_en.png" %}}?classes=shadow)
 
 
 ### Configure the Contao News Archive
@@ -161,7 +161,7 @@ to post __publicly__ on your behalf, when granting permissions. The Facebook acc
 the Access Token also must have the rights to create timeline posts on the Facebook page.
 {{% /notice %}}
 
-![News archive settings](/de/extensions/images/en/contao-news-facebook_archive_settings_en.png?classes=shadow)
+![News archive settings]({{% asset "images/manual/extensions/en/contao-news-facebook_archive_settings_en.png" %}}?classes=shadow)
 
 Any downloaded images will be saved to the folder configured in your news archive (`files/facebook_images` by default).
 Like any other folder, this folder needs to be made public under Contao 4!
@@ -178,7 +178,7 @@ whenever someone shares a link to a news entry. With this option you can disable
 __Post as photo__: since version `3.0.0` news entries are not posted as photo posts anymore, whenever the news entry 
 has a teaser image. With this option you can re-enable this functionality.
 
-![Back end settings](/de/extensions/images/en/contao-news-facebook_backend_settings_en.png?classes=shadow)
+![Back end settings]({{% asset "images/manual/extensions/en/contao-news-facebook_backend_settings_en.png" %}}?classes=shadow)
 
 If you do not use a hook, the default headline length can be configured via
 
@@ -208,17 +208,19 @@ You can also define a custom message for the Facebook post. If no such message i
 
 The extension will check for new news entries to be published minutely via Contao's cronjob.
 
-![News settings](/de/extensions/images/en/contao-news-facebook_news_settings_en.png?classes=shadow)
+![News settings]({{% asset "images/manual/extensions/en/contao-news-facebook_news_settings_en.png" %}}?classes=shadow)
 
 
 ### Manual sync trigger
 
 There is a button to trigger a sync in the back end, within the global operations for news archives.
 
-![News global operations](/de/extensions/images/en/contao-news-facebook_news_global_operations_en.png?classes=shadow)
+![News global operations]({{% asset "images/manual/extensions/en/contao-news-facebook_news_global_operations_en.png" %}}?classes=shadow)
 
 
 ## Hooks
+
+The extension provides some [Hooks][Hooks] which allow you to alter the behavior when posting to Facebook or fetching Facebook posts.
 
 ### `processFacebookPost`
 
@@ -232,13 +234,135 @@ The extension processes a Facebook post and tries to convert it to a fitting Con
 
 ### `changeFacebookMessage`
 
-When posting a Contao news entry as a Facebook post, the extension either uses the teaser or the specified message of the news entry. If you want to automatically provide a different message, you can use the `changeFacebookMessage` hook. It expects the final message as the return value.
+When posting a Contao news entry as a Facebook post, the extension either uses the teaser or the specified message of the news entry. If you want to automatically provide a different message, you can use the `changeFacebookMessage` hook. It expects the final message as the return value. 
+
 
 #### Parameters
 
 1. _string_ `$message` The already prepared message.
 2. _object_ `$objArticle` The original Contao news entry.
 3. _object_ `$objArchive` The news archive object.
+
+
+#### Example
+
+The following example appends the news article's URL to any photo post:
+
+{{< tabs groupId="four-way-service-registration" >}}
+{{% tab name="Attribute" %}}
+```php
+// src/EventListener/ChangeFacebookMessageListener.php
+namespace App\EventListener;
+
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
+use Contao\News;
+use Contao\NewsArchiveModel;
+use Contao\NewsModel;
+
+#[AsHook('changeFacebookMessage')]
+class ChangeFacebookMessageListener
+{
+    public function __invoke(string $message, NewsModel $news, NewsArchiveModel $archive): string
+    {
+        // Append the URL to photo posts
+        if ($news->addImage && $news->fbPostAsPhoto) {
+            $message .= "\n\n".News::generateNewsUrl($news, false, true);
+        }
+
+        return $message;
+    }
+}
+```
+{{% /tab %}}
+
+{{% tab name="Annotation" %}}
+```php
+// src/EventListener/ChangeFacebookMessageListener.php
+namespace App\EventListener;
+
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
+use Contao\News;
+use Contao\NewsArchiveModel;
+use Contao\NewsModel;
+
+#[AsHook('changeFacebookMessage')]
+class ChangeFacebookMessageListener
+{
+    public function __invoke(string $message, NewsModel $news, NewsArchiveModel $archive): string
+    {
+        // Append the URL to photo posts
+        if ($news->addImage && $news->fbPostAsPhoto) {
+            $message .= "\n\n".News::generateNewsUrl($news, false, true);
+        }
+
+        return $message;
+    }
+}
+```
+{{% /tab %}}
+{{% tab name="YAML" %}}
+```yaml
+# config/services.yaml
+services:
+    App\EventListener\ActivateAccountListener:
+        tags:
+            - { name: contao.hook, hook: changeFacebookMessage }
+```
+```php
+// src/EventListener/ChangeFacebookMessageListener.php
+namespace App\EventListener;
+
+use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\News;
+use Contao\NewsArchiveModel;
+use Contao\NewsModel;
+
+class ChangeFacebookMessageListener
+{
+    public function __invoke(string $message, NewsModel $news, NewsArchiveModel $archive): string
+    {
+        // Append the URL to photo posts
+        if ($news->addImage && $news->fbPostAsPhoto) {
+            $message .= "\n\n".News::generateNewsUrl($news, false, true);
+        }
+
+        return $message;
+    }
+}
+```
+{{% /tab %}}
+
+{{% tab name="config.php" %}}
+```php
+// contao/config.php
+use App\EventListener\ChangeFacebookMessageListener;
+
+$GLOBALS['TL_HOOKS']['changeFacebookMessage'][] = [ChangeFacebookMessageListener::class, '__invoke'];
+```
+```php
+// src/EventListener/ChangeFacebookMessageListener.php
+namespace App\EventListener;
+
+use Contao\CoreBundle\ServiceAnnotation\Hook;
+use Contao\News;
+use Contao\NewsArchiveModel;
+use Contao\NewsModel;
+
+class ChangeFacebookMessageListener
+{
+    public function __invoke(string $message, NewsModel $news, NewsArchiveModel $archive): string
+    {
+        // Append the URL to photo posts
+        if ($news->addImage && $news->fbPostAsPhoto) {
+            $message .= "\n\n".News::generateNewsUrl($news, false, true);
+        }
+
+        return $message;
+    }
+}
+```
+{{% /tab %}}
+{{< /tabs >}}
 
 
 ## Template data
@@ -248,3 +372,6 @@ There is additional data available in the news templates:
 - _object_ `fbData` The original Facebook post data
 - _string_ `fbPostId` The Facebook post ID of the linked Facebook post
 - _char_ `fromFb` Indicates whether this news entry was fetched from Facebook
+
+
+[Hooks]: https://docs.contao.org/dev/framework/hooks/

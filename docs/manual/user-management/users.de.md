@@ -13,14 +13,14 @@ Bisher haben wir ausschließlich als Administrator gearbeitet, der auf alle Bere
 darf. Ein Benutzer wird in der Regel aber nur Zugriff auf die Ressourcen erhalten, die er für eine bestimmte 
 Aufgabe tatsächlich benötigt.
 
-![Das Backend aus Sicht des Benutzers](/de/user-management/images/de/das-backend-aus-sicht-des-benutzers.png?classes=shadow)
+![Das Backend aus Sicht des Benutzers]({{% asset "images/manual/user-management/de/das-backend-aus-sicht-des-benutzers.png" %}}?classes=shadow)
 
 Normale Benutzer haben im Gegensatz zu Administratoren standardmäßig überhaupt keine Rechte und dürfen grundsätzlich 
 nur das tun, was du ihnen explizit erlaubst. Die sehr umfassende Rechteverwaltung in Contao ermöglicht es dir als 
 Administrator nicht nur, den Zugriff auf bestimmte Backend-Module einzuschränken, sondern bei Bedarf jedes einzelne
 Eingabefeld abzuschalten.
 
-![Einzelne Eingabefelder freischalten](/de/user-management/images/de/einzelne-eingabefelder-freischalten.png?classes=shadow)
+![Einzelne Eingabefelder freischalten]({{% asset "images/manual/user-management/de/einzelne-eingabefelder-freischalten.png" %}}?classes=shadow)
 
 ## Benutzergruppen
 
@@ -39,6 +39,15 @@ gesondert gesteuert werden.
 
 **Theme-Module:** Hier legst du den Zugriff auf die Untermodule des Theme-Managers fest.
 
+{{< version-tag "5.3" >}} **Frontend-Module:** Hier legst du den Zugriff auf die Frontend-Module fest.
+
+
+### Erlaubte Elemente
+
+**Inhaltselemente:** Hier legst du den Zugriff auf Inhaltselemente fest.
+
+**Formularfelder:** Hier legst du den Zugriff auf Formularfelder fest.
+
 
 ### Pagemounts
 
@@ -48,7 +57,7 @@ Das Einbinden eines Dateisystems, sodass ein Benutzer darauf zugreifen kann, bez
 **Pagemounts:** Hier wählst du die Pagemounts der Gruppe aus.
 
 **Erlaubte Seitentypen:** Hier kannst du festlegen, welche Seitentypen die Mitglieder der Benutzergruppe erstellen 
-dürfen vgl. [Seitentypen](../../seitenstruktur/seiten-als-zentrale-elemente/#seitentypen).
+dürfen vgl. [Seitentypen](/de/seitenstruktur/seiten-als-zentrale-elemente/#seitentypen).
 
 
 ### Filemounts
@@ -56,27 +65,27 @@ dürfen vgl. [Seitentypen](../../seitenstruktur/seiten-als-zentrale-elemente/#s
 Analog zum Pagemount, der den Einstiegspunkt in die Seitenstruktur bestimmt, legt der Filemount den Einstiegspunkt in 
 das Dateisystem fest. Auf Ordner außerhalb des Filemount kann der Benutzer nicht zugreifen.
 
-![Filemounts des Benutzers](/de/user-management/images/de/filemounts-des-benutzers.png?classes=shadow)
+![Filemounts des Benutzers]({{% asset "images/manual/user-management/de/filemounts-des-benutzers.png" %}}?classes=shadow)
 
 Der Benutzer sieht also nur die Ordner `files/public/media/content-images`, `files/public/media/documents` sowie 
 `files/public/media/slider` und alle eventuell darin enthaltenen Unterordner. Alle übrigen Verzeichnisse, die sich 
 auf derselben oder einer übergeordneten Ebene befinden, werden nicht angezeigt
 
-![Die Dateiverwaltung aus Sicht des Benutzers](/de/user-management/images/de/die-dateiverwaltung-aus-sicht-des-benutzers.png?classes=shadow)
+![Die Dateiverwaltung aus Sicht des Benutzers]({{% asset "images/manual/user-management/de/die-dateiverwaltung-aus-sicht-des-benutzers.png" %}}?classes=shadow)
 
 **Filemounts:** Hier wählst du die Filemounts der Gruppe aus.
 
 **Erlaubte Datei-Operationen:** Ein Verzeichnis und die darin enthaltenen Dateien sehen zu können, bedeutet noch nicht, 
 dass ein Benutzer diese auch bearbeiten darf. Du kannst hier festlegen, was mit den gemounteten Ressourcen möglich ist.
 
-| Operation                                                           | Erklärung                                                                                           |
-|:--------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------|
-| Dateien auf den Server hochladen                                    | Der Benutzer darf bestimmte Dateien über die Dateiverwaltung auf den Server übertragen (Upload). Die erlaubten Dateien kannst du in den Backend-Einstellungen festlegen. |
-| Dateien und Verzeichnisse bearbeiten, kopieren und verschieben      | Der Benutzer darf Dateien und Verzeichnisse umbenennen, duplizieren und verschieben. |
-| Einzelne Dateien und leere Verzeichnisse löschen                    | Der Benutzer darf einzelne Dateien und leere Verzeichnisse löschen (nicht rekursiv). |
-| Verzeichnisse inklusive aller Dateien und Unterordner löschen (!)   | Der Benutzer darf Dateien und Verzeichnisse rekursiv, also inklusive aller enthaltenen Unterorder und Dateien, löschen. |
-| Dateien im Quelltexteditor bearbeiten                               | Der Benutzer darf den Inhalt bestimmter Dateien mit dem Quelltexteditor direkt auf dem Server bearbeiten. Die erlaubten Dateien kannst du in den Backend-Einstellungen festlegen. |
-| Das Dateisystem mit der Datenbank synchronisieren                   | Der Benutzer darf das Dateisystem mit der Datenbank synchronisieren. |
+| Operation                                                            | Erklärung                                                                                                                                                                          |
+|:---------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Dateien auf den Server hochladen                                     | Der Benutzer darf bestimmte Dateien über die Dateiverwaltung auf den Server übertragen (Upload). Die erlaubten Dateien kannst du in den Backend-Einstellungen festlegen.         |
+| Dateien und Verzeichnisse bearbeiten, kopieren und verschieben       | Der Benutzer darf Dateien und Verzeichnisse umbenennen, duplizieren und verschieben.                                                                                               |
+| Einzelne Dateien und leere Verzeichnisse löschen                     | Der Benutzer darf einzelne Dateien und leere Verzeichnisse löschen (nicht rekursiv).                                                                                               |
+| Verzeichnisse inklusive aller Dateien und Unterordner löschen (!)    | Der Benutzer darf Dateien und Verzeichnisse rekursiv, also inklusive aller enthaltenen Unterorder und Dateien, löschen.                                                            |
+| Dateien im Quelltexteditor bearbeiten                                | Der Benutzer darf den Inhalt bestimmter Dateien mit dem Quelltexteditor direkt auf dem Server bearbeiten. Die erlaubten Dateien kannst du in den Backend-Einstellungen festlegen.  |
+| Das Dateisystem mit der Datenbank synchronisieren                    | Der Benutzer darf das Dateisystem mit der Datenbank synchronisieren.                                                                                                               |
 
 
 ### Bildgrößen
@@ -117,6 +126,24 @@ bestehende löschen dürfen.
 **RSS-Feed-Rechte:** Hier legst du fest, ob die Mitglieder der Benutzergruppe neue RSS-Feeds anlegen bzw. bestehende 
 löschen dürfen.
 
+{{< version-tag "5.3" >}} Die News-Feeds werden nicht mehr im Archiv angelegt, sondern über den Seitentyp 
+[News-Feed](/de/seitenstruktur/news-feed/). Wenn Mitglieder der Benutzergruppe auf die Feeds zugreifen sollen, müssen 
+ihnen diese bei den [Pagemounts](/de/benutzerverwaltung/benutzer/#pagemounts) gewährt werden.
+
+
+### Events-Rechte
+[Kalender-Erweiterung](../../core-erweiterung/kalender/)
+
+**Erlaubte Kalender:** Hier legst du fest, auf welche Kalender die Mitglieder der Benutzergruppe zugreifen dürfen.
+
+**Kalenderrechte:** Hier legst du fest, ob die Mitglieder der Benutzergruppe neue Kalender anlegen bzw. bestehende
+löschen dürfen.
+
+**Erlaubte RSS-Feeds:** Hier legst du fest, auf welche RSS-Feeds die Mitglieder der Benutzergruppe zugreifen dürfen.
+
+**RSS-Feed-Rechte:** Hier legst du fest, ob die Mitglieder der Benutzergruppe neue RSS-Feeds anlegen bzw. bestehende
+löschen dürfen.
+
 
 ### Newsletter-Rechte 
 [Newsletter-Erweiterung](../../core-erweiterung/newsletter/)
@@ -127,26 +154,12 @@ löschen dürfen.
 löschen dürfen.
 
 
-### Events-Rechte
-[Kalender-Erweiterung](../../core-erweiterung/kalender/)
-
-**Erlaubte Kalender:** Hier legst du fest, auf welche Kalender die Mitglieder der Benutzergruppe zugreifen dürfen.
-
-**Kalenderrechte:** Hier legst du fest, ob die Mitglieder der Benutzergruppe neue Kalender anlegen bzw. bestehende 
-löschen dürfen.
-
-**Erlaubte RSS-Feeds:** Hier legst du fest, auf welche RSS-Feeds die Mitglieder der Benutzergruppe zugreifen dürfen.
-
-**RSS-Feed-Rechte:** Hier legst du fest, ob die Mitglieder der Benutzergruppe neue RSS-Feeds anlegen bzw. bestehende 
-löschen dürfen.
-
-
 ### Erlaubte Mitgliedergruppen
 
 **Erlaubte Mitgliedergruppen:** Mitglieder dieser Gruppe können in der Frontend-Vorschau verwendet werden.
 
 
-### Ausgenommene Felder
+### Erlaubte Felder
 
 Zu Beginn des Abschnitts wurde erwähnt, dass normale Benutzer standardmäßig keinerlei Rechte haben (»deny all«) und 
 du als Administrator jeden Zugriff explizit freischalten musst. Das gilt auch für die einzelnen Eingabefelder jedes 
@@ -159,7 +172,7 @@ Felder zur Veröffentlichung eines Artikels oder eines Nachrichtenbeitrags für
 Redakteur etwas veröffentlichen, ohne dass du oder ein Chefredakteur es vorher gesehen hat.
 
 
-### Deaktivierung
+### Gruppeneinstellungen
 
 Benutzergruppen können manuell oder automatisch zu einem bestimmten Zeitpunkt deaktiviert werden. Von einer 
 deaktivierten Gruppe können keine Rechte mehr geerbt werden.
@@ -204,34 +217,36 @@ hier abschalten kannst.
 **Vorschaubilder anzeigen:** Hier kannst du die Vorschaubilder in der Dateiübersicht der Dateiverwaltung deaktivieren, 
 damit die Verzeichnisstruktur schneller lädt.
 
-**Rich Text Editor verwenden:** Hier kannst du den Rich Text Editor deaktivieren.
+**Rich-Text-Editor verwenden:** Hier kannst du den Rich-Text-Editor deaktivieren.
 
 **Code-Editor verwenden:** Hier kannst du den Code-Editor deaktivieren.
+
+**Inhaltselemente nicht einklappen:** Hier kannst du verhindern, dass die Inhaltselemente in der Backend-Vorschau 
+eingeklappt dargestellt werden.
 
 
 ### Backend-Theme
 
 **Backend-Theme:** Hier kannst du das Backend-Theme ändern, falls ein weiteres vorhanden ist.
 
-**Fullscreen:** Die Breite des Backends soll nicht begrenzen.
-
 
 ### Passworteinstellungen
 
-**Passwort-Änderung notwendig:**  Hier kannst du den den Benutzer zwingen, sein Passwort bei der nächsten Anmeldung zu 
-ändern.
-
 **Passwort:** Hier kannst du dem Benutzer ein Passwort zuweisen.
 
+**Passwort-Änderung notwendig:**  Hier kannst du den den Benutzer zwingen, sein Passwort bei der nächsten Anmeldung zu
+ändern.
 
-### Zwei-Faktor-Authentisierung
 
-Benutzer können die Zwei-Faktor-Authentisierung aktivieren, um den Account zusätzlich abzusichern. Neben dem Benutzernamen 
-und Passwort muss ein Verifizierungscode (»Time-based One-time Password«) eingegeben werden. Dieses Einmalpasswort muss 
-von einer Zwei-Faktor-App wie z. B. 1Password, Authy, Google Authenticator, Microsoft Authenticator, LastPass Authenticator 
-oder jeder anderen TOTP-App generiert werden.
+#### Zwei-Faktor-Authentisierung
 
-Benutzer können verpflichtet werden, Zwei-Faktor-Authentisierung zu verwenden. Hierfür muss folgende Konfiguration in die `config/config.yml` übernommen werden:
+Benutzer können die Zwei-Faktor-Authentisierung aktivieren, um den Account zusätzlich abzusichern. Neben dem 
+Benutzernamen und Passwort muss ein Verifizierungscode (»Time-based One-time Password«) eingegeben werden. Dieses 
+Einmalpasswort muss von einer Zwei-Faktor-App wie z. B. 1Password, Authy, Google Authenticator, Microsoft Authenticator, 
+LastPass Authenticator oder jeder anderen TOTP-App generiert werden.
+
+Benutzer können verpflichtet werden, Zwei-Faktor-Authentisierung zu verwenden. Hierfür muss folgende Konfiguration in 
+die `config/config.yml` übernommen werden:
 
 ```yml
 contao:
@@ -256,13 +271,14 @@ Auswahlmenü, ist die Hauptgruppe, die z. B. beim Erstellen neuer Seiten automa
 
 **Rechtevererbung:** Es gibt folgende drei Möglichkeiten der Rechtevergabe:
 
-| Modus                          | Erklärung                                               |
-|:-------------------------------|:--------------------------------------------------------|
-| Nur Gruppenrechte verwenden    | Es werden nur die Rechte der aktiven Gruppen geerbt.    |
-| Gruppenrechte erweitern        | Es werden die Rechte der aktiven Gruppen geerbt und zusätzlich um individuelle Rechte erweitert. |
-| Nur Benutzerrechte verwenden   | Es werden nur individuelle Rechte verwendet.            |
+| Modus                           | Erklärung                                                                                          |
+|:--------------------------------|:---------------------------------------------------------------------------------------------------|
+| Nur Gruppenrechte verwenden     | Es werden nur die Rechte der aktiven Gruppen geerbt.                                               |
+| Gruppenrechte erweitern         | Es werden die Rechte der aktiven Gruppen geerbt und zusätzlich um individuelle Rechte erweitert.   |
+| Nur Benutzerrechte verwenden    | Es werden nur individuelle Rechte verwendet.                                                       |
 
 Die Konfiguration der individuellen Rechte erfolgt analog zur Konfiguration der [Benutzergruppen](#benutzergruppen).
+
 
 ### Kontoeinstellung
 
@@ -300,13 +316,13 @@ Als Letztes musst du noch einen Benutzer anlegen und ihn der Gruppe zuweisen.
 
 ### Voraussetzungen in der Seitenstruktur
 
-In Abschnitt [Zugriffsrechte](../../seitenstruktur/seiten-konfigurieren/#zugriffsrechte), hast du bereits gelernt, 
+In Abschnitt [Zugriffsrechte](/de/seitenstruktur/regulaere-seite/#zugriffsrechte), hast du bereits gelernt, 
 dass jede Seite einem bestimmten Benutzer und einer bestimmten Gruppe gehört und dass es darauf basierend verschiedene 
 Zugriffsebenen gibt.
 
-![Zugriffsrechte einer Seite](/de/user-management/images/de/zugriffsrechte-einer-seite.png?classes=shadow)
+![Zugriffsrechte einer Seite]({{% asset "images/manual/user-management/de/zugriffsrechte-einer-seite.png" %}}?classes=shadow)
 
-Diese Seite gehört z. B. dem Benutzer `Helen Lewis`, der sie und die darin enthaltenen Artikel bearbeiten, verschieben 
+Diese Seite gehört z. B. der Benutzerin `Helen Lewis`, welche diese Seite und die darin enthaltenen Artikel bearbeiten, verschieben 
 oder löschen darf. Andere Benutzer der Gruppe `Editors` dürfen lediglich die Artikel bearbeiten, nicht aber die Seite 
 an sich.
 
@@ -314,4 +330,4 @@ Du musst also die Seiten, die ein Benutzer bearbeiten soll oder auf denen er Art
 Zugriffsrechten versehen und sie entweder dem Benutzer oder seiner Gruppe zuweisen. Damit schaffst du die 
 Voraussetzungen dafür, dass ein Benutzer die entsprechenden Navigationssymbole anklicken kann.
 
-![Die Seitenstruktur ohne zugewiesene Zugriffsrechte](/de/user-management/images/de/die-seitenstruktur-ohne-zugewiesene-zugriffsrechte.png?classes=shadow)
+![Die Seitenstruktur ohne zugewiesene Zugriffsrechte]({{% asset "images/manual/user-management/de/die-seitenstruktur-ohne-zugewiesene-zugriffsrechte.png" %}}?classes=shadow)

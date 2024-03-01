@@ -33,7 +33,7 @@ oberen Menü und bestätige mit "Ok".
 
 Du erhälst eine `sql`-Datei, die du im nächsten Schritt importieren kannst.
 
-![Exporting the database](/de/installation/images/de/datenbank-exportieren.png?classes=shadow)
+![Exporting the database]({{% asset "images/manual/installation/de/datenbank-exportieren.png" %}}?classes=shadow)
 {{% /tab %}}
 {{% tab name="Command line" %}}
 Stelle sicher, dass `mysqldump` und `gzip` installiert sind, dann führe folgendes Kommando aus (dabei ersetzt du 
@@ -57,7 +57,7 @@ Alle Inhalte der Datenbank wurden nun in die Datei `my_dump.sql.gz` geschrieben 
 
 Klicke auf die »Import«-Schaltfläche im oberen Menü, lade dann den zuvor erstellten SQL-Dump hoch und starte den Import.
 
-![Importing the database](/de/installation/images/de/datenbank-importieren.png?classes=shadow)
+![Importing the database]({{% asset "images/manual/installation/de/datenbank-importieren.png" %}}?classes=shadow)
 
 {{% /tab %}}
 {{% tab name="Command line" %}}
@@ -80,15 +80,20 @@ Gib dein Passwort ein, wenn du danach gefragt wirst.
 ## Dateien übertragen
 Die folgenden Dateien und Ordner müssen vom Quell- zum Zielserver übertragen werden:
 
-- `files`
-- `templates`
-- `composer.json`
-- `composer.lock`
+- `files`                           (deine Dateien)
+- `templates`                       (angepasste templates)
+- `composer.json`                   (die gewünschten Abhängigkeiten)
+- `composer.lock`                   (die aktuell installierten Abhängigkeiten)
+- `system/config/localconfig.php`   (deine Einstellungen)
 
-Falls du noch alte Erweiterungen unter `system/modules` abgelegt hast, alte Konfigurationen unter `system/config`,
-eine `config.yml` im Verzeichnis `config/` (bzw. **vor Contao 4.8** `app/config/`) oder Contao Anpassungen unter
-`contao/` (bzw. **vor Contao 4.8**  `app/Resources/contao/`) angelegt hast, müssen diese auch auf deinen Server
-übertragen werden.
+Die folgenden Dateien und Ordner sollten - sofern genutzt - vom Quell- zum Zielserver übertragen werden:
+
+- `config`  (bzw. **vor Contao 4.8** `app/config/`)         
+- `contao`  (bzw. **vor Contao 4.8** `app/Resources/contao/`
+- `src`
+- `.env*`
+
+Falls du noch alte Erweiterungen unter `system/modules` oder alte Konfigurationen unter `system/config` angelegt hast, müssen diese auch auf deinen Server übertragen werden.
 
 Du kannst dazu entweder einen FTP-Client verwenden oder – falls du die Konsole bevorzugst – das Programm `scp`:
 
@@ -104,7 +109,7 @@ scp -r files/ templates/ composer.json composer.lock your_server:/www/project/
 2. Führe dann eine Installation mit *Composer* aus – da du zuvor auch die `composer.lock`-Datei übertragen hast, die
    Details über alle installierten Paket-Versionen enthält, wird Composer den identischen Stand wie auf dem Quellsystem
    herstellen.
-   Nutze dazu entweder den [Contao Manager](#installation-mit-dem-contao-manager) oder die [Kommandozeile](#installation-ueber-die-kommandozeile).
+   Nutze dazu entweder den [Contao Manager](../contao-installieren/#installation-mit-dem-contao-manager) oder die [Kommandozeile](../contao-installieren/#installation-ueber-die-kommandozeile).
 3. Führe dann das [Contao-Installtool](../contao-installtool) aus, um die neue Datenbankverbindung einzurichten.
 
 Das war's! Du kannst deine Contao Installation jetzt am neuen Ort nutzen. 

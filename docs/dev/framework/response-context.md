@@ -51,21 +51,17 @@ be accessed by its class name or in case it implements interfaces, by their resp
 Setting and accessing the current `ResponseContext` is simplified by the `ResponseContextAccessor`:
 
 ```php
-<?php
-
 // src/Controller/Page/ExamplePageController.php
 namespace App\Controller\Page;
 
-use Contao\CoreBundle\ServiceAnnotation\Page;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsPage;
 use Contao\PageModel;
 use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
 use Contao\CoreBundle\Routing\ResponseContext\ResponseContext;
 use Contao\CoreBundle\Routing\ResponseContext\ResponseContextAccessor;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @Page
- */
+#[AsPage]
 class ExamplePageController
 {
     private ResponseContextAccessor $responseContextAccessor;
@@ -118,6 +114,20 @@ The goal should be to be able to manage everything within `<head>` dynamically.
 Right now, it's a very basic service that allows you to override `<title>` by calling `setTitle()`. Same goes for
 `setMetaDescription()` and `setMetaRobots()`.
 
+{{< version "4.13" >}}
+
+As of Contao 4.13 and if enabled in the root page settings, Contao will also generate a `rel="canoncial"` link pointing to
+itself while removing all the query parameters from the current URL. Alternatively, the user can provide a custom other URL and
+configure the query parameters which should be kept (e.g. if `?foobar=42` is relevant, they add `foobar` in which case
+it would not get removed). You can also dynamically adjust the behaviour to your needs using the `HtmlHeadBag` and for
+example automatically mark a certain query parameter to always be kept to have the users not even require to add it
+in their page settings:
+
+* `setKeepParamsForCanonical()` - overrides the query parameters to keep
+* `addKeepParamsForCanonical()` - adds a query parameter name to the (possibly) already existing array of parameters to keep
+* `setCanonicalUri()` - completely set the URL yourself
+
+
 ### The `JsonLdManager`
 
 The `JsonLdManager` is a central place to manage JSON-LD data collected within all the elements. 
@@ -135,7 +145,7 @@ use Spatie\SchemaOrg\ImageObject;
 $schemaManager = new JsonLdManager(new ResponseContext());
 
 // This is how you would access it from the current context (in case it exists)
-$schemaManager = $this->responseContextAccessor->getCurrentContext()->get(JsonLdManager::class);
+$schemaManager = $this->responseContextAccessor->getResponseContext()->get(JsonLdManager::class);
 
 // Get the graph for schema.org
 $graph = $schemaManager->getGraphForSchema(JsonLdManager::SCHEMA_ORG);
@@ -164,6 +174,14 @@ $graph->add((new ImageObject())->name('Name')->caption('Caption'));
 $schemaManager->collectFinalScriptFromGraphs()
 ```
 
+
+### The `CspHandler`
+
+The `CspHandler` allows you to modify Content Security Policies for the current Contao request, when enabled in the
+website root. A detailed description can be found in its [dedicated article][CspHandler].
+
+
+
 ## Future
 
 The Response Context will likely be the place where additional possibilities will be introduced such as
@@ -172,3 +190,6 @@ The Response Context will likely be the place where additional possibilities wil
 - Adding/managing `<link>` tags
 - Adding/managing `<meta>` tags
 - ...
+
+
+[CspHandler]: /framework/csp/
